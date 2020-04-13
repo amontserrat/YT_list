@@ -1,0 +1,18 @@
+<!-- index page -->
+
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Hello, {{ user.username }}!</h1>
+	
+	<li> hola </li>
+    <li>{{ user.username }}</li>
+	
+	{% for post in posts %}
+	<div>
+		<p>
+			On {{post.date}}, {{post.author.username}} says: <b>{{post.body}}</b>
+    	</p>
+    </div>
+    {%endfor%}
+{% endblock %}

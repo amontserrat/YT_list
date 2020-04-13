@@ -1,0 +1,33 @@
+<html>
+    <head>
+      {% if title %}
+        <title>{{ title }} - YouTube list player</title>
+      {% else %}
+        <title>Welcome to the YouTube list player</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>YT-Player: 
+          <a href="{{ url_for('index') }}">Home</a>
+          <a href="{{ url_for('about') }}">About</a>
+          <a href="{{ url_for('login') }}">Login</a>
+        </div>
+
+        <hr>
+
+        <!-- inserts flashed messages  -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <!-- here inserts content from other templates -->
+        {% block content %}{% endblock %}
+
+    </body>
+</html>
