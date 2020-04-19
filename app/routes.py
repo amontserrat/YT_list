@@ -1,14 +1,16 @@
 # This file includes the different URLs that the application will implement
 
 from app import myApp
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app.forms import LoginForm
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
+from werkzeug.urls import url_parse
 
 
 @myApp.route('/')
 @myApp.route('/index')
+@login_required
 def index():
 	user = {'username': 'Albert'}
 	posts = [
@@ -47,7 +49,13 @@ def login():
 
 		#if both username and password are correct, then register user as logged-in
 		login_user(user, remember=myForm.remember_me.data)
-		return redirect(url_for('index'))
+
+		#get next_page variable from the user request
+		next_page = request.args.get('next')
+		#if next_page not exist or next is set to non-relative path
+		if not next_page or url_parse(next_page).netloc != '':
+			next_page = url_for('index')
+		return redirect(next_page)
 		
 	return render_template('login.html', title='Sign in', form=myForm)
 
